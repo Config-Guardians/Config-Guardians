@@ -1,0 +1,26 @@
+services:
+  hachiware:
+    container_name: hachiware
+    image: zachareee/hachiware
+    build: ./hachiware
+    ports:
+      - 4000:4000
+    environment:
+      SIDECAR_HOST: steampipe
+      DATABASE_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
+      STEAMPIPE_DATABASE_URL: postgres://steampipe:password@steampipe:9193/steampipe
+    depends_on:
+      - steampipe
+      - hachiware-db
+  steampipe:
+    container_name: steampipe
+    build: ./steampipe-sidecar
+    image: zachareee/steampipe-sidecar
+    ports:
+      - 8080:8080
+      # - 9193:9193
+  hachiware-db:
+    container_name: hachiware-db
+    image: postgres:17.6
+    environment:
+      - POSTGRES_PASSWORD=postgres
