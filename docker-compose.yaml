@@ -14,7 +14,7 @@ services:
       - hachiware-db
   steampipe:
     container_name: steampipe
-    build: ./steampipe-sidecar
+    build: ./steampipe
     image: zachareee/steampipe-sidecar
     ports:
       - 8080:8080
