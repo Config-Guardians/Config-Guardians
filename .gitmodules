@@ -1,0 +1,6 @@
+[submodule "hachiware"]
+	path = hachiware
+	url = https://github.com/Config-Guardians/hachiware
+[submodule "steampipe"]
+	path = steampipe
+	url = https://github.com/Config-Guardians/steampipe-sidecar
