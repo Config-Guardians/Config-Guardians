@@ -4,3 +4,6 @@
 [submodule "steampipe"]
 	path = steampipe
 	url = https://github.com/Config-Guardians/steampipe-sidecar
+[submodule "agent-system"]
+	path = agent-system
+	url = https://github.com/Config-Guardians/agent-system.git
