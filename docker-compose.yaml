@@ -1,8 +1,15 @@
+name: Config-Guardians
+
 services:
   hachiware:
     container_name: hachiware
     image: zachareee/hachiware
     build: ./hachiware
+    develop:
+      watch:
+        - path: ./hachiware
+          action: sync
+          target: /app
     ports:
       - 4000:4000
     environment:
@@ -16,6 +23,10 @@ services:
     container_name: steampipe
     build: ./steampipe
     image: zachareee/steampipe-sidecar
+    develop:
+      watch:
+        - path: ./steampipe
+          action: rebuild
     ports:
       - 8080:8080
       # - 9193:9193
