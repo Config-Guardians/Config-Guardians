@@ -6,7 +6,7 @@ services:
     ports:
       - 4000:4000
     environment:
-      SIDECAR_HOST: steampipe
+      SIDECAR_HOST: steampipe:8080
       DATABASE_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
       STEAMPIPE_DATABASE_URL: postgres://steampipe:password@steampipe:9193/steampipe
     depends_on:
