@@ -1,4 +1,6 @@
 # Config Guardians
+IF YOU PULL AND SOMETHING'S NOT WORKING, REMEMBER TO `git submodule update --init`
+
 Here lives the top level repository for setting up and running config-guardians
 
 ## Cloning
