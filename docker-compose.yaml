@@ -38,6 +38,6 @@ services:
       hachiware:
         condition: service_healthy
     environment:
-      OPENAI_API_KEY: ""
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
       HACHIWARE_ENDPOINT: http://hachiware:4000
       PYTHONUNBUFFERED: 1
