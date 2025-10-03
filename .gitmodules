@@ -7,3 +7,6 @@
 [submodule "agent-system"]
 	path = agent-system
 	url = https://github.com/Config-Guardians/agent-system.git
+[submodule "dashboard"]
+	path = dashboard
+	url = https://github.com/Config-Guardians/dashboard

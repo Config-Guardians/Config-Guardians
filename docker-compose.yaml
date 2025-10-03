@@ -19,6 +19,13 @@ services:
     depends_on:
       - steampipe
       - hachiware-db
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:4000/api/swaggerui"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
   steampipe:
     container_name: steampipe
     build: ./steampipe
@@ -35,3 +42,13 @@ services:
     image: postgres:17.6
     environment:
       - POSTGRES_PASSWORD=postgres
+  agent-system:
+    container_name: agent-system
+    build: ./agent-system
+    depends_on:
+      hachiware:
+        condition: service_healthy
+    environment:
+      OPENAI_API_KEY: ""
+      HACHIWARE_ENDPOINT: http://hachiware:4000
+      PYTHONUNBUFFERED: 1
