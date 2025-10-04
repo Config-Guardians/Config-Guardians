@@ -44,11 +44,12 @@ services:
       - POSTGRES_PASSWORD=postgres
   agent-system:
     container_name: agent-system
+    platform: linux/amd64
     build: ./agent-system
     depends_on:
       hachiware:
         condition: service_healthy
     environment:
-      OPENAI_API_KEY: ""
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
       HACHIWARE_ENDPOINT: http://hachiware:4000
       PYTHONUNBUFFERED: 1
