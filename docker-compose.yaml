@@ -37,6 +37,20 @@ services:
     ports:
       - 8080:8080
       # - 9193:9193
+  dashboard:
+    container_name: dashboard
+    build: ./dashboard
+    develop:
+      watch:
+        - path: ./app
+          action: rebuild
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
+      HACHIWARE_URL: http://hachiware:4000/api
+    depends_on:
+      - hachiware-db
   hachiware-db:
     container_name: hachiware-db
     image: postgres:17.6
