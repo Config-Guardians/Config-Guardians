@@ -33,6 +33,7 @@ services:
       - POSTGRES_PASSWORD=postgres
   agent-system:
     container_name: agent-system
+    platform: linux/amd64
     build: ./agent-system
     depends_on:
       hachiware:
