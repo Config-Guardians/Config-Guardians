@@ -31,7 +31,7 @@ services:
     build: ./dashboard
     develop:
       watch:
-        - path: ./app
+        - path: ./dashboard/app
           action: rebuild
     ports:
       - "3000:3000"
