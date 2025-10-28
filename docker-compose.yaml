@@ -1,3 +1,5 @@
+name: Config-Guardians
+
 services:
   hachiware:
     container_name: hachiware
@@ -12,6 +14,11 @@ services:
     depends_on:
       - steampipe
       - hachiware-db
+    develop:
+      watch:
+        - path: ./hachiware
+          action: sync
+          target: /app
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:4000/api/swaggerui"]
       interval: 30s
@@ -26,6 +33,10 @@ services:
     ports:
       - 8080:8080
       # - 9193:9193
+    develop:
+      watch:
+        - path: ./steampipe
+          action: rebuild
   dashboard:
     container_name: dashboard
     build: ./dashboard
