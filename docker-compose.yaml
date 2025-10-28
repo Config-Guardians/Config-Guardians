@@ -1,6 +1,13 @@
 name: Config-Guardians
 
 services:
+  ssewatch:
+    container_name: ssewatch
+    image: zachareee/ssewatch
+    build: ./SSE-watcher
+    depends_on:
+      hachiware:
+        condition: service_healthy
   hachiware:
     container_name: hachiware
     image: zachareee/hachiware
