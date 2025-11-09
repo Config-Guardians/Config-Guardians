@@ -19,8 +19,10 @@ services:
       DATABASE_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
       STEAMPIPE_DATABASE_URL: postgres://steampipe:password@steampipe:9193/steampipe
     depends_on:
-      - steampipe
-      - hachiware-db
+      steampipe:
+        condition: service_healthy
+      hachiware-db:
+        condition: service_started
     develop:
       watch:
         - path: ./hachiware
@@ -44,6 +46,12 @@ services:
       watch:
         - path: ./steampipe
           action: rebuild
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
   dashboard:
     container_name: dashboard
     build: ./dashboard
