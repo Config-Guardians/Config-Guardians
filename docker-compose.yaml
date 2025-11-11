@@ -42,7 +42,7 @@ services:
     image: zachareee/steampipe-sidecar
     ports:
       - 8080:8080
-      # - 9193:9193
+      - 9193:9193
     develop:
       watch:
         - path: ./steampipe
