@@ -34,7 +34,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+      start_period: 20s
 
   steampipe:
     container_name: steampipe
@@ -52,11 +52,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+      start_period: 20s
 
   dashboard:
     container_name: dashboard
-    build: ./dashboard
+    build:
+      args:
+        - NEXT_PUBLIC_HACHIWARE_URL=http://localhost:4000/api
+      context: ./dashboard
     develop:
       watch:
         - path: ./dashboard/app
@@ -66,7 +69,7 @@ services:
     environment:
       NEXT_PUBLIC_HACHIWARE_URL: http://hachiware:4000/api
     depends_on:
-      - hachiware-db
+      - hachiware
 
   hachiware-db:
     container_name: hachiware-db
