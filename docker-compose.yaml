@@ -58,5 +58,12 @@ services:
       PYTHONUNBUFFERED: 1
       OLLAMA_HOST: ${OLLAMA_HOST}
       GITHUB_TOKEN: ${GITHUB_TOKEN}
-    volumes:
-      - ${FAISS_INDEX_PATH}:/app/agents/faiss_index
+#     volumes:
+#       - smbdata:/app/agents/faiss_index
+#
+# volumes:
+#   smbdata:
+#     driver_opts:
+#       type: cifs
+#       o: username=${SMB_USER},password=${SMB_PASS},vers=3.0
+#       device: //10.8.0.52/shared/faiss_index_qwen
