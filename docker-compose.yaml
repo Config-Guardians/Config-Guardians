@@ -8,6 +8,7 @@ services:
     depends_on:
       hachiware:
         condition: service_healthy
+
   hachiware:
     container_name: hachiware
     image: zachareee/hachiware
@@ -52,6 +53,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+
   dashboard:
     container_name: dashboard
     build: ./dashboard
@@ -62,15 +64,18 @@ services:
     ports:
       - "3000:3000"
     environment:
-      POSTGRES_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
-      HACHIWARE_URL: http://hachiware:4000/api
+      NEXT_PUBLIC_HACHIWARE_URL: http://hachiware:4000/api
     depends_on:
       - hachiware-db
+
   hachiware-db:
     container_name: hachiware-db
     image: postgres:17.6
     environment:
       - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
   agent-system:
     container_name: agent-system
     platform: linux/amd64
