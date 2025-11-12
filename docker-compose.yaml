@@ -13,6 +13,7 @@ services:
     container_name: hachiware
     image: zachareee/hachiware
     build: ./hachiware
+    platform: linux/amd64
     ports:
       - 4000:4000
     environment:
@@ -40,6 +41,7 @@ services:
     container_name: steampipe
     build: ./steampipe
     image: zachareee/steampipe-sidecar
+    platform: linux/amd64
     ports:
       - 8080:8080
       - 9193:9193
