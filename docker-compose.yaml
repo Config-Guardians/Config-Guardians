@@ -3,7 +3,6 @@ name: Config-Guardians
 services:
   ssewatch:
     container_name: ssewatch
-    image: zachareee/ssewatch
     build: ./SSE-watcher
     depends_on:
       hachiware:
@@ -13,7 +12,6 @@ services:
     container_name: hachiware
     image: zachareee/hachiware
     build: ./hachiware
-    platform: linux/amd64
     ports:
       - 4000:4000
     environment:
@@ -41,7 +39,6 @@ services:
     container_name: steampipe
     build: ./steampipe
     image: zachareee/steampipe-sidecar
-    platform: linux/amd64
     ports:
       - 8080:8080
       - 9193:9193
@@ -85,6 +82,12 @@ services:
     container_name: agent-system
     platform: linux/amd64
     build: ./agent-system
+    healthcheck:
+      test: ["CMD-SHELL", "ls agents/faiss_index"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     depends_on:
       hachiware:
         condition: service_healthy
