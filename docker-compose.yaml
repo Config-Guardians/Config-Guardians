@@ -1,9 +1,17 @@
+name: Config-Guardians
+
 services:
+  ssewatch:
+    container_name: ssewatch
+    build: ./SSE-watcher
+    depends_on:
+      hachiware:
+        condition: service_healthy
+
   hachiware:
     container_name: hachiware
     image: zachareee/hachiware
     build: ./hachiware
-    platform: linux/amd64
     ports:
       - 4000:4000
     environment:
@@ -11,26 +19,47 @@ services:
       DATABASE_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
       STEAMPIPE_DATABASE_URL: postgres://steampipe:password@steampipe:9193/steampipe
     depends_on:
-      - steampipe
-      - hachiware-db
+      steampipe:
+        condition: service_healthy
+      hachiware-db:
+        condition: service_started
+    develop:
+      watch:
+        - path: ./hachiware
+          action: sync
+          target: /app
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:4000/api/swaggerui"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 15s
+      start_period: 20s
 
   steampipe:
     container_name: steampipe
     build: ./steampipe
     image: zachareee/steampipe-sidecar
-    platform: linux/amd64
     ports:
       - 8080:8080
-      # - 9193:9193
+      - 9193:9193
+    develop:
+      watch:
+        - path: ./steampipe
+          action: rebuild
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
   dashboard:
     container_name: dashboard
-    build: ./dashboard
+    image: zachareee/cg-dashboard
+    build:
+      args:
+        - NEXT_PUBLIC_HACHIWARE_URL=http://localhost:4000/api
+      context: ./dashboard
     develop:
       watch:
         - path: ./dashboard/app
@@ -38,19 +67,29 @@ services:
     ports:
       - "3000:3000"
     environment:
-      POSTGRES_URL: postgres://postgres:postgres@hachiware-db:5432/postgres
-      HACHIWARE_URL: http://hachiware:4000/api
+      NEXT_PUBLIC_HACHIWARE_URL: http://hachiware:4000/api
     depends_on:
-      - hachiware-db
+      - hachiware
+
   hachiware-db:
     container_name: hachiware-db
     image: postgres:17.6
     environment:
       - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
   agent-system:
     container_name: agent-system
+    image: zachareee/cg-agent-system
     platform: linux/amd64
     build: ./agent-system
+    healthcheck:
+      test: ["CMD-SHELL", "ls agents/faiss_index"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     depends_on:
       hachiware:
         condition: service_healthy
