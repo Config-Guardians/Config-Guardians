@@ -55,6 +55,7 @@ services:
 
   dashboard:
     container_name: dashboard
+    image: zachareee/cg-dashboard
     build:
       args:
         - NEXT_PUBLIC_HACHIWARE_URL=http://localhost:4000/api
@@ -80,6 +81,7 @@ services:
 
   agent-system:
     container_name: agent-system
+    image: zachareee/cg-agent-system
     platform: linux/amd64
     build: ./agent-system
     healthcheck:
